@@ -1,4 +1,4 @@
 export interface GrammarRule {
-  variable: String;
+  variable: string;
   productions: string[];
 }

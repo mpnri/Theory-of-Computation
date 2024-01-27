@@ -22,6 +22,7 @@
     "vitest": "^1.2.1"
   },
   "dependencies": {
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "immutable": "4.3.4"
   }
 }

@@ -16,5 +16,6 @@ const rules: GrammarRule[] = [];
 for (let i = 0; i < numberOfProductions; i++) {
   input = prompt();
   const [variable, productions] = input.split("->").map((s) => s.trim());
-  rules.push({ variable, productions: productions.split("|").map((p) => p.trim()) });
+  const rule = { variable: variable[0], productions: productions.split("|").map((p) => p.trim()) };
+  rules.push(rule);
 }
