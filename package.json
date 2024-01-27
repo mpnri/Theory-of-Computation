@@ -11,18 +11,20 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "ts-node": "10.9.2",
-    "typescript": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.48.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
     "prettier": "^3.0.3",
+    "ts-node": "10.9.2",
+    "typescript": "^5.3.3",
     "vitest": "^1.2.1"
   },
   "dependencies": {
-    "prompt-sync": "^4.2.0",
-    "immutable": "4.3.4"
+    "immutable": "4.3.4",
+    "lodash.clonedeep": "^4.5.0",
+    "@types/lodash.clonedeep": "^4.5.9",
+    "prompt-sync": "^4.2.0"
   }
 }

@@ -21,6 +21,11 @@ for (let i = 0; i < numberOfProductions; i++) {
   rules.push(rule);
 }
 
-console.log(rules);
+// console.log(rules);
 console.log();
-console.log(convertToChomskyNormalForm(rules));
+const result = convertToChomskyNormalForm(rules);
+console.log("\nFinal result:\n");
+result.forEach((rule) => {
+  console.log(rule.variable, "->", rule.productions.join(" | "));
+});
+console.log();
