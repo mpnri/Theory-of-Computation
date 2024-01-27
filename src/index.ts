@@ -1,5 +1,6 @@
 import promptSync from "prompt-sync";
 import { GrammarRule } from "./types";
+import { convertToChomskyNormalForm } from "./Chomsky_normal_form";
 
 const prompt: (message?: string) => string = promptSync();
 
@@ -19,3 +20,5 @@ for (let i = 0; i < numberOfProductions; i++) {
   const rule = { variable: variable[0], productions: productions.split("|").map((p) => p.trim()) };
   rules.push(rule);
 }
+console.log(rules);
+convertToChomskyNormalForm(rules);

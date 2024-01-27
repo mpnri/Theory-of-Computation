@@ -1,12 +1,20 @@
 import { GrammarRule } from "./types";
-import { Map } from "immutable";
 
-function convertToChomskyNormalForm(rules: GrammarRule[]) {}
+// const my_rules = [
+//   { variable: "S", productions: ["AbB", "C"] },
+//   { variable: "B", productions: ["AA", "AC"] },
+//   { variable: "C", productions: ["b", "c"] },
+//   { variable: "A", productions: ["a", "''"] },
+// ];
+
+export function convertToChomskyNormalForm(rules: GrammarRule[]) {
+  console.log(Eliminate_εRules(rules));
+}
 
 function Eliminate_εRules(rules: GrammarRule[]): GrammarRule[] {
-  const isNullableMap = Map<string, boolean>();
-  const markMap = Map<string, boolean>();
-  const rulesMap = Map<string, GrammarRule>();
+  const isNullableMap = new Map<string, boolean>();
+  const markMap = new Map<string, boolean>();
+  const rulesMap = new Map<string, GrammarRule>();
   rules.forEach((rule) => rulesMap.set(rule.variable[0], rule));
 
   const signNullableRules = (rule: GrammarRule) => {
@@ -49,16 +57,21 @@ function Eliminate_εRules(rules: GrammarRule[]): GrammarRule[] {
   rules.forEach((rule) => {
     const productions = [...rule.productions].filter((production) => production !== "''");
     const originalLength = productions.length;
+    //todo: use bitmask
     for (let index = 0; index < originalLength; index++) {
       const current = productions[index];
       current.split("").forEach((char, i) => {
         if (char === char.toUpperCase() && isNullableMap.get(char)) {
-          productions.push(current.substring(0, i).concat(current.substring(i)));
+          productions.push(current.substring(0, i).concat(current.substring(i + 1)));
         }
       });
     }
     if (productions.length) {
-      resultRules.push({ variable: rule.variable, productions });
+      resultRules.push({
+        variable: rule.variable,
+        //* make production list unique
+        productions: productions.filter((current, index) => index === productions.indexOf(current)),
+      });
     }
   });
   return resultRules;
