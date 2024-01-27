@@ -207,11 +207,15 @@ function makeFormalRules(rules: GrammarRule[]): GrammarRule[] {
   });
   const newVariables = new Map<string, string>();
   resultRules.forEach((rule) => {
-    rule.productions.forEach((production) => {
-      production
-        .split("")
-        .forEach((char) => char !== char.toUpperCase() && newVariables.set(char, "X_" + char));
-    });
+    rule.productions
+      .filter((p) => p.length > 1)
+      .forEach((production) => {
+        production.split("").forEach((char) => {
+          if ("a" <= char && char <= "z") {
+            newVariables.set(char, "X_" + char);
+          }
+        });
+      });
   });
   resultRules.forEach((rule) => {
     rule.productions = rule.productions.map((p) => {
