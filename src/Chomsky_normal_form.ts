@@ -1,14 +1,15 @@
 import { GrammarRule } from "./types";
 
-// const my_rules = [
-//   { variable: "S", productions: ["AbB", "C"] },
-//   { variable: "B", productions: ["AA", "AC"] },
-//   { variable: "C", productions: ["b", "c"] },
-//   { variable: "A", productions: ["a", "''"] },
-// ];
+const sample_rules = [
+  { variable: "S", productions: ["AbB", "C"] },
+  { variable: "B", productions: ["AA", "AC"] },
+  { variable: "C", productions: ["b", "c"] },
+  { variable: "A", productions: ["a", "''"] },
+];
 
-export function convertToChomskyNormalForm(rules: GrammarRule[]) {
-  console.log(Eliminate_εRules(rules));
+export function convertToChomskyNormalForm(rules: GrammarRule[]): GrammarRule[] {
+  // console.log(Eliminate_εRules(sample_rules));
+  return Eliminate_εRules(rules);
 }
 
 function Eliminate_εRules(rules: GrammarRule[]): GrammarRule[] {
@@ -57,20 +58,36 @@ function Eliminate_εRules(rules: GrammarRule[]): GrammarRule[] {
   rules.forEach((rule) => {
     const productions = [...rule.productions].filter((production) => production !== "''");
     const originalLength = productions.length;
-    //todo: use bitmask
     for (let index = 0; index < originalLength; index++) {
       const current = productions[index];
-      current.split("").forEach((char, i) => {
-        if (char === char.toUpperCase() && isNullableMap.get(char)) {
-          productions.push(current.substring(0, i).concat(current.substring(i + 1)));
-        }
-      });
+      const currentArr = current.split("");
+
+      const variablesCount = currentArr.filter((char) => char === char.toUpperCase()).length;
+      for (let mask = 1; mask < 1 << variablesCount; mask++) {
+        let variableIndex = 0;
+        let tempStr = "";
+        currentArr.forEach((char) => {
+          if (char === char.toUpperCase()) {
+            if (mask & (1 << variableIndex) && isNullableMap.get(char)) {
+              tempStr += "-";
+            } else {
+              tempStr += char;
+            }
+            variableIndex++;
+          } else {
+            tempStr += char;
+          }
+        });
+        productions.push(tempStr.replaceAll("-", ""));
+      }
     }
     if (productions.length) {
       resultRules.push({
         variable: rule.variable,
-        //* make production list unique
-        productions: productions.filter((current, index) => index === productions.indexOf(current)),
+        productions: productions
+          .filter(Boolean)
+          //* make production list unique
+          .filter((current, index, self) => index === self.indexOf(current)),
       });
     }
   });
