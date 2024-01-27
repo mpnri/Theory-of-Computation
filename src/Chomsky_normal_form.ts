@@ -187,23 +187,23 @@ function makeFormalRules(rules: GrammarRule[]): GrammarRule[] {
       }
       let tempStr = p[p.length - 1];
       for (let i = p.length - 2; i >= 0; i--) {
-        const _p = p[i] + tempStr[0];
+        const _p = p[i] + tempStr;
         if (!convertMap.has(_p) && i > 0) {
           counter++;
           convertMap.set(_p, "Y_" + counter);
         }
         if (i > 0) {
           tempStr = convertMap.get(_p);
-        } else {
+                  } else {
           tempStr = p[i] + tempStr;
-        }
+                  }
       }
       return tempStr;
     });
     return { variable: rule.variable, productions: productions };
   });
   Array.from(convertMap.entries()).forEach(([newProduction, newVariable]) => {
-    resultRules.push({ variable: newVariable, productions: [newProduction] });
+        resultRules.push({ variable: newVariable, productions: [newProduction] });
   });
   const newVariables = new Map<string, string>();
   resultRules.forEach((rule) => {
